@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Don Juan - Servicios Mineros</title>
+    <title>Don Juan- Servicios Mineros</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide-icons"></script>
     <script>
@@ -15,61 +15,70 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#10B981', // Verde Esmeralda (Tailwind green-500)
-                        'primary-dark': '#059669', // Verde Esmeralda Oscuro (Tailwind green-600)
-                        'primary-light': '#A7F3D0', // Verde Esmeralda Claro (Tailwind green-200)
+                        primary: '#2ECC71', // Verde Esmeralda Brillante
+                        'primary-dark': '#27AE60', // Verde Esmeralda Oscuro (Nephritis)
+                        'primary-light': '#D5F5E3', // Verde Esmeralda Muy Claro
+                        accent: '#48C9B0', // Turquesa sutil (opcional)
                         neutral: '#FFFFFF', // Blanco
-                        'neutral-soft': '#F9FAFB', // Gris muy claro (Tailwind gray-50)
-                        dark: '#1F2937', // Gris Oscuro (Tailwind gray-800)
-                        'dark-soft': '#4B5563', // Gris Medio (Tailwind gray-600)
+                        'neutral-soft': '#F4F6F7', // Gris muy claro, casi blanco (Clouds)
+                        'text-dark': '#34495E', // Gris oscuro azulado (Wet Asphalt)
+                        'text-light': '#7F8C8D', // Gris medio (Asbestos)
+                        'footer-bg': '#2C3E50', // Azul oscuro para footer (Midnight Blue)
                     },
                     borderRadius: {
-                        'xl': '1rem', // Bordes más redondeados
+                        'xl': '1rem', 
+                    },
+                    boxShadow: {
+                        'cta-hover': '0 10px 15px -3px rgba(46, 204, 113, 0.3), 0 4px 6px -2px rgba(46, 204, 113, 0.2)',
+                        'card-hover': '0 10px 20px rgba(46, 204, 113, 0.15), 0 6px 6px rgba(46, 204, 113, 0.1)',
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos personalizados adicionales */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: theme('colors.neutral-soft'); /* Fondo general gris muy claro */
+            background-color: theme('colors.neutral-soft');
+            color: theme('colors.text-dark');
         }
-        /* La clase .hero-section ya no necesita definir un background estático, el carrusel lo maneja */
         .cta-button {
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: theme('boxShadow.cta-hover');
         }
-        .service-card {
+        .service-card, .news-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: theme('colors.neutral'); /* Fondo blanco para tarjetas */
+            background-color: theme('colors.neutral');
+            border-top-width: 4px;
+            border-color: transparent; /* Borde superior transparente por defecto */
         }
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(20, 100, 80,0.1); /* Sombra con tinte verde */
+        .service-card:hover, .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: theme('boxShadow.card-hover');
+            border-color: theme('colors.primary'); /* Borde superior visible al hacer hover */
         }
         html {
             scroll-behavior: smooth;
         }
-        #form-message {
+        #form-message, #cv-form-message {
             display: none;
             padding: 1rem;
             margin-top: 1rem;
             border-radius: 0.5rem;
             text-align: center;
         }
-        #form-message.success {
+        #form-message.success, #cv-form-message.success {
             background-color: theme('colors.primary-light');
             color: theme('colors.primary-dark');
         }
-        #form-message.error {
-            background-color: #fee2e2; /* Rojo claro */
-            color: #991b1b; /* Rojo oscuro */
+        #form-message.error, #cv-form-message.error {
+            background-color: #FADBD8; /* Rojo pálido */
+            color: #C0392B; /* Rojo fuerte */
         }
         .map-container {
             position: relative;
@@ -87,209 +96,283 @@
             height: 100%;
             border: 0;
         }
-        /* Ajustes de color para íconos y texto */
-        .text-primary { color: theme('colors.primary'); }
-        .bg-primary { background-color: theme('colors.primary'); }
-        .hover\:bg-primary-dark:hover { background-color: theme('colors.primary-dark'); }
-        .hover\:text-primary:hover { color: theme('colors.primary'); }
-        .text-dark { color: theme('colors.dark'); }
-        .text-dark-soft { color: theme('colors.dark-soft'); }
-        .bg-dark { background-color: theme('colors.dark'); }
-        .text-neutral { color: theme('colors.neutral'); }
-        .border-primary { border-color: theme('colors.primary'); }
-       
-
+        input[type="file"]::file-selector-button {
+            margin-right: 1rem;
+            border: none;
+            background: theme('colors.primary');
+            padding: 0.6rem 1.2rem; /* Un poco más de padding */
+            border-radius: 0.375rem;
+            color: theme('colors.neutral');
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color .2s ease-in-out;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: theme('colors.primary-dark');
+        }
+        /* Clases de utilidad para colores (para asegurar que se apliquen después de la config de Tailwind) */
+        .text-primary { color: theme('colors.primary') !important; }
+        .bg-primary { background-color: theme('colors.primary') !important; }
+        .hover\:bg-primary-dark:hover { background-color: theme('colors.primary-dark') !important; }
+        .hover\:text-primary:hover { color: theme('colors.primary') !important; }
+        .text-text-dark { color: theme('colors.text-dark') !important; } 
+        .text-text-light { color: theme('colors.text-light') !important; } 
+        .bg-footer-bg { background-color: theme('colors.footer-bg') !important; }
+        .text-neutral { color: theme('colors.neutral') !important; }
+        .border-primary { border-color: theme('colors.primary') !important; }
     </style>
 </head>
 
-<body class="text-dark">
+<body class="text-text-dark">
 
-    <header class="bg-neutral shadow-md sticky top-0 z-50">
+    <header class="bg-neutral shadow-lg sticky top-0 z-50"> 
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#inicio" class="text-2xl font-bold text-primary"> <img src="/img/logodj.jpg" alt="[Logo de don juan]" class="h-10 md:h-12">
-                </a>
-            <div class="hidden md:flex space-x-6 items-center">
-                <a href="#inicio" class="text-dark-soft hover:text-primary">Inicio</a>
-                <a href="#servicios" class="text-dark-soft hover:text-primary">Servicios</a>
-                <a href="#nosotros" class="text-dark-soft hover:text-primary">Nosotros</a>
-                <a href="#contacto" class="text-dark-soft hover:text-primary">Contacto</a>
-                </div>
+            <a href="#inicio" class="text-2xl font-bold"> 
+                <img src="img\logodj.jpg" alt="[Logo de TuEmpresa]" class="h-10 md:h-12">
+            </a>
+            <div class="hidden md:flex space-x-4 lg:space-x-6 items-center">
+                <a href="#inicio" class="text-text-light font-medium hover:text-primary transition-colors">Inicio</a>
+                <a href="#servicios" class="text-text-light font-medium hover:text-primary transition-colors">Servicios</a>
+                <a href="#nosotros" class="text-text-light font-medium hover:text-primary transition-colors">Nosotros</a>
+                <a href="#noticias" class="text-text-light font-medium hover:text-primary transition-colors">Noticias</a>
+                <a href="#trabaja-con-nosotros" class="text-text-light font-medium hover:text-primary transition-colors">Trabaja con Nosotros</a>
+                <a href="#contacto" class="text-text-light font-medium hover:text-primary transition-colors">Contacto</a>
+            </div>
             <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-dark-soft focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                <button id="mobile-menu-button" class="text-text-light focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 </button>
             </div>
         </nav>
-        <div id="mobile-menu" class="md:hidden hidden bg-neutral shadow-lg">
-            <a href="#inicio" class="block px-6 py-3 text-dark-soft hover:bg-primary-light hover:text-primary">Inicio</a>
-            <a href="#servicios" class="block px-6 py-3 text-dark-soft hover:bg-primary-light hover:text-primary">Servicios</a>
-            <a href="#nosotros" class="block px-6 py-3 text-dark-soft hover:bg-primary-light hover:text-primary">Nosotros</a>
-            <a href="#contacto" class="block px-6 py-3 text-dark-soft hover:bg-primary-light hover:text-primary">Contacto</a>
-            </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-neutral shadow-lg rounded-b-lg">
+            <a href="#inicio" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Inicio</a>
+            <a href="#servicios" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Servicios</a>
+            <a href="#nosotros" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Nosotros</a>
+            <a href="#noticias" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Noticias</a>
+            <a href="#trabaja-con-nosotros" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Trabaja con Nosotros</a>
+            <a href="#contacto" class="block px-6 py-3 text-text-light font-medium hover:bg-primary-light hover:text-primary transition-colors">Contacto</a>
+        </div>
     </header>
 
-    <section id="inicio" class="relative text-neutral overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center">
+    <section id="inicio" class="relative text-neutral overflow-hidden min-h-[65vh] md:min-h-[75vh] flex items-center">
         <div id="hero-carousel" class="absolute inset-0 w-full h-full">
             <div class="carousel-slide">
-                <img src="https://placehold.co/1920x1080/34D399/1F2937?text=Proyectos+Exitosos" class="absolute block w-full h-full object-cover" alt="[Servicios Innovadores de la Empresa]">
+                <img src="img\portada1.jpg">
             </div>
             <div class="carousel-slide">
-                <img src="https://placehold.co/1920x1080/34D399/1F2937?text=Proyectos+Exitosos" class="absolute block w-full h-full object-cover" alt="[Equipo Profesional de la Empresa]">
+                <img src="https://placehold.co/1920x1080/27AE60/FFFFFF?text=Innovación+y+Tecnología" class="absolute block w-full h-full object-cover" alt="[Innovación y Tecnología en la Empresa]">
             </div>
             <div class="carousel-slide">
-                <img src="https://placehold.co/1920x1080/34D399/1F2937?text=Proyectos+Exitosos" class="absolute block w-full h-full object-cover" alt="[Proyecto Exitoso de la Empresa]">
+                <img src="https://placehold.co/1920x1080/58D68D/2C3E50?text=Compromiso+con+Clientes" class="absolute block w-full h-full object-cover" alt="[Compromiso con Clientes de la Empresa]">
             </div>
         </div>
-
-        <div class="absolute inset-0 bg-black opacity-50 z-25"></div>
-
+        <div class="absolute inset-0 bg-black opacity-60 z-25"></div> 
         <div class="relative z-30 container mx-auto px-6 text-center py-20 md:py-32">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">Don Juan</h1>
-            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-neutral-soft">Impulsamos el crecimiento de tu empresa con servicios personalizados y estrategias efectivas.</p>
-            <a href="#servicios" class="bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button">Nuestros Servicios</a>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">TuEmpresa</h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-neutral-soft font-light">Impulsamos el crecimiento de tu empresa con servicios personalizados y estrategias efectivas.</p>
+            <a href="#servicios" class="bg-primary text-white px-10 py-4 rounded-lg text-xl font-semibold hover:bg-primary-dark cta-button">Nuestros Servicios</a>
         </div>
-
-        <button type="button" id="hero-carousel-prev" class="absolute top-1/2 left-4 z-40 transform -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 focus:ring-4 focus:ring-white focus:outline-none transition">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            <span class="sr-only">Anterior</span>
+        <button type="button" id="hero-carousel-prev" class="absolute top-1/2 left-2 md:left-4 z-40 transform -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 focus:ring-4 focus:ring-primary focus:outline-none transition">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <button type="button" id="hero-carousel-next" class="absolute top-1/2 right-4 z-40 transform -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 focus:ring-4 focus:ring-white focus:outline-none transition">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            <span class="sr-only">Siguiente</span>
+        <button type="button" id="hero-carousel-next" class="absolute top-1/2 right-2 md:right-4 z-40 transform -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 focus:ring-4 focus:ring-primary focus:outline-none transition">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
         </button>
     </section>
 
-    <section id="servicios" class="py-16 md:py-24 bg-neutral-soft">
+    <section id="servicios" class="py-20 md:py-28 bg-neutral-soft">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark">Nuestros Servicios</h2>
-                <p class="text-dark-soft mt-4 max-w-xl mx-auto">Ofrecemos una amplia gama de servicios diseñados para satisfacer tus necesidades y superar tus expectativas.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-text-dark mb-4">Nuestros Servicios</h2>
+                <p class="text-text-light text-lg max-w-2xl mx-auto">Ofrecemos una amplia gama de servicios diseñados para satisfacer tus necesidades y superar tus expectativas.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb text-primary"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Consultoría Estratégica</h3>
-                    <p class="text-dark-soft">Analizamos tu negocio para desarrollar estrategias que impulsen tu crecimiento y eficiencia.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="service-card p-8 rounded-xl shadow-xl text-center">
+                    <div class="flex justify-center mb-6"><svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb text-primary"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+                    <h3 class="text-2xl font-semibold mb-4 text-text-dark">Consultoría Estratégica</h3><p class="text-text-light leading-relaxed">Analizamos tu negocio para desarrollar estrategias que impulsen tu crecimiento y eficiencia.</p></div>
+                <div class="service-card p-8 rounded-xl shadow-xl text-center">
+                    <div class="flex justify-center mb-6"><svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2 text-primary"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></div>
+                    <h3 class="text-2xl font-semibold mb-4 text-text-dark">Desarrollo Web y Apps</h3><p class="text-text-light leading-relaxed">Creamos soluciones digitales a medida, desde sitios web impactantes hasta aplicaciones móviles funcionales.</p></div>
+                <div class="service-card p-8 rounded-xl shadow-xl text-center">
+                    <div class="flex justify-center mb-6"><svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-big text-primary"><path d="M3 3v18h18"/><path d="M7 12h3v4H7z"/><path d="M12 7h3v9h-3z"/><path d="M17 14h3v3h-3z"/></svg></div>
+                    <h3 class="text-2xl font-semibold mb-4 text-text-dark">Marketing Digital</h3><p class="text-text-light leading-relaxed">Potenciamos tu presencia online con estrategias de SEO, SEM y gestión de redes sociales.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nosotros" class="py-20 md:py-28 bg-neutral">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <img src="https://placehold.co/600x450/D5F5E3/34495E?text=Equipo+Colaborativo" alt="[Imagen de Nuestro Equipo Colaborativo]" class="rounded-xl shadow-2xl w-full">
                 </div>
-                <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2 text-primary"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Desarrollo Web y Apps</h3>
-                    <p class="text-dark-soft">Creamos soluciones digitales a medida, desde sitios web impactantes hasta aplicaciones móviles funcionales.</p>
-                </div>
-                <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-big text-primary"><path d="M3 3v18h18"/><path d="M7 12h3v4H7z"/><path d="M12 7h3v9h-3z"/><path d="M17 14h3v3h-3z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Marketing Digital</h3>
-                    <p class="text-dark-soft">Potenciamos tu presencia online con estrategias de SEO, SEM y gestión de redes sociales.</p>
-                </div>
-                 <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-figma text-primary"><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Diseño Gráfico</h3>
-                    <p class="text-dark-soft">Creamos identidades visuales impactantes, logotipos y material gráfico que reflejan tu marca.</p>
-                </div>
-                 <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Soporte Técnico</h3>
-                    <p class="text-dark-soft">Ofrecemos asistencia técnica especializada para garantizar la continuidad de tus operaciones.</p>
-                </div>
-                 <div class="service-card p-8 rounded-xl shadow-lg text-center">
-                    <div class="flex justify-center mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap text-primary"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.084a1 1 0 0 0 0 1.838l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12v5c0 3 2.5 5 5 5s5-2 5-5v-5"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">Capacitación y Talleres</h3>
-                    <p class="text-dark-soft">Brindamos programas de formación adaptados para potenciar las habilidades de tu equipo.</p>
+                <div class="lg:w-1/2">
+                    <span class="text-primary font-semibold text-sm uppercase tracking-wider">Quiénes Somos</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-text-dark mt-3 mb-6">Conoce Nuestra Empresa</h2>
+                    <p class="text-text-light text-lg mb-6 leading-relaxed">Somos un equipo de profesionales apasionados por la innovación y comprometidos con el éxito de nuestros clientes. Desde nuestra fundación en [Año de Fundación], hemos trabajado con empresas de diversos sectores, ayudándolas a alcanzar sus objetivos y a destacarse en un mercado competitivo.</p>
+                    <p class="text-text-light text-lg mb-8 leading-relaxed">Nuestra misión es ofrecer soluciones de alta calidad, personalizadas y orientadas a resultados. Creemos en la colaboración, la transparencia y la mejora continua como pilares fundamentales de nuestro trabajo.</p>
+                    <a href="#contacto" class="bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button">Hablemos de tu Proyecto</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="nosotros" class="py-16 md:py-24 bg-neutral">
+    <section id="noticias" class="py-20 md:py-28 bg-neutral-soft">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-12">
-                    <img url="https://github.com/pablosegundo96/Don-Juan-Empresa/blob/main/img/logodj.jpg" alt="logodj" class="rounded-xl shadow-xl w-full">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-text-dark mb-4">Últimas Noticias y Novedades</h2>
+                <p class="text-text-light text-lg max-w-2xl mx-auto">Mantente al día con los últimos acontecimientos, lanzamientos y artículos de interés de TuEmpresa.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="news-card rounded-xl shadow-xl overflow-hidden flex flex-col">
+                    <img src="https://placehold.co/600x400/2ECC71/FFFFFF?text=Noticia+Impactante" alt="[Imagen de la Noticia 1]" class="w-full h-52 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <p class="text-sm text-primary font-semibold mb-2 uppercase tracking-wider">2 DE JUNIO DE 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-text-dark leading-tight">Nuevo Lanzamiento de Producto Revoluciona el Mercado</h3>
+                        <p class="text-text-light mb-5 text-sm flex-grow leading-relaxed">Estamos emocionados de anunciar nuestro último producto que promete cambiar la forma en que las empresas abordan [un problema específico] con tecnología de punta...</p>
+                        <a href="#" class="text-primary hover:text-primary-dark font-semibold self-start group transition-all duration-300">Leer más <span class="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span></a>
                     </div>
-                <div class="md:w-1/2">
-                    <h2 class="text-3xl md:text-4xl font-bold text-dark mb-6">Conoce Nuestra Empresa</h2>
-                    <p class="text-dark-soft mb-4 leading-relaxed">
-                        Somos un equipo de profesionales apasionados por la innovación y comprometidos con el éxito de nuestros clientes. Desde nuestra fundación en [Año de Fundación], hemos trabajado con empresas de diversos sectores, ayudándolas a alcanzar sus objetivos y a destacarse en un mercado competitivo.
-                    </p>
-                    <p class="text-dark-soft mb-6 leading-relaxed">
-                        Nuestra misión es ofrecer soluciones de alta calidad, personalizadas y orientadas a resultados. Creemos en la colaboración, la transparencia y la mejora continua como pilares fundamentales de nuestro trabajo.
-                    </p>
-                    <a href="#contacto" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark cta-button">Hablemos de tu Proyecto</a>
                 </div>
+                <div class="news-card rounded-xl shadow-xl overflow-hidden flex flex-col">
+                    <img src="https://placehold.co/600x400/27AE60/FFFFFF?text=Reconocimiento" alt="[Imagen de la Noticia 2]" class="w-full h-52 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <p class="text-sm text-primary font-semibold mb-2 uppercase tracking-wider">28 DE MAYO DE 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-text-dark leading-tight">TuEmpresa Recibe Reconocimiento por Innovación</h3>
+                        <p class="text-text-light mb-5 text-sm flex-grow leading-relaxed">Fuimos galardonados con el prestigioso premio [Nombre del Premio] en reconocimiento a nuestro compromiso con la innovación y la excelencia en el sector de [sector]...</p>
+                        <a href="#" class="text-primary hover:text-primary-dark font-semibold self-start group transition-all duration-300">Leer más <span class="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span></a>
+                    </div>
+                </div>
+                <div class="news-card rounded-xl shadow-xl overflow-hidden flex flex-col">
+                    <img src="https://placehold.co/600x400/58D68D/2C3E50?text=Tendencias+2025" alt="[Imagen de la Noticia 3]" class="w-full h-52 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <p class="text-sm text-primary font-semibold mb-2 uppercase tracking-wider">15 DE MAYO DE 2025</p>
+                        <h3 class="text-xl font-bold mb-3 text-text-dark leading-tight">Artículo: 5 Tendencias Clave en [Tu Sector] para 2025</h3>
+                        <p class="text-text-light mb-5 text-sm flex-grow leading-relaxed">Nuestro equipo de expertos analiza las tendencias que marcarán el futuro de [tu sector] y cómo tu negocio puede prepararse para ellas eficazmente...</p>
+                        <a href="#" class="text-primary hover:text-primary-dark font-semibold self-start group transition-all duration-300">Leer más <span class="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span></a>
+                    </div>
+                </div>
+            </div>
+             <div class="text-center mt-16">
+                <a href="#" class="bg-primary text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button">Ver Todas las Noticias</a>
             </div>
         </div>
     </section>
 
-    <section id="contacto" class="py-16 md:py-24 bg-neutral-soft">
+    <section id="trabaja-con-nosotros" class="py-20 md:py-28 bg-neutral">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark">Contáctanos</h2>
-                <p class="text-dark-soft mt-4 max-w-xl mx-auto">¿Tienes alguna pregunta o deseas iniciar un proyecto con nosotros? Completa el formulario o utiliza nuestros datos de contacto.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-text-dark mb-4">Únete a Nuestro Equipo</h2>
+                <p class="text-text-light text-lg max-w-2xl mx-auto">Buscamos personas talentosas y apasionadas para crecer con nosotros. Si crees que tienes lo necesario, ¡nos encantaría conocerte!</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-                <div class="bg-neutral p-8 md:p-12 rounded-xl shadow-xl">
+            <div class="max-w-2xl mx-auto bg-neutral-soft p-8 md:p-12 rounded-xl shadow-2xl">
+                <form id="cv-form">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="cv-nombre" class="block text-text-light font-semibold mb-2">Nombre Completo</label>
+                            <input type="text" id="cv-nombre" name="cv-nombre" placeholder="Ej: Ana Rodriguez" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
+                        </div>
+                        <div>
+                            <label for="cv-email" class="block text-text-light font-semibold mb-2">Correo Electrónico</label>
+                            <input type="email" id="cv-email" name="cv-email" placeholder="Ej: ana.rodriguez@correo.com" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="cv-telefono" class="block text-text-light font-semibold mb-2">Teléfono (Opcional)</label>
+                            <input type="tel" id="cv-telefono" name="cv-telefono" placeholder="Ej: +54 9 XXX XXX XXXX" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                        </div>
+                        <div>
+                            <label for="cv-area" class="block text-text-light font-semibold mb-2">Área de Interés</label>
+                            <select id="cv-area" name="cv-area" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white transition-colors" required>
+                                <option value="" disabled selected>Selecciona un área</option>
+                                <option value="desarrollo">Desarrollo y Programación</option>
+                                <option value="diseno">Diseño Gráfico/UX/UI</option>
+                                <option value="marketing">Marketing Digital</option>
+                                <option value="ventas">Ventas y Comercial</option>
+                                <option value="soporte">Soporte Técnico</option>
+                                <option value="admin">Administración</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="cv-mensaje" class="block text-text-light font-semibold mb-2">Mensaje / Carta de Presentación</label>
+                        <textarea id="cv-mensaje" name="cv-mensaje" rows="5" placeholder="Cuéntanos un poco sobre ti y por qué te gustaría unirte a nuestro equipo..." class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required></textarea>
+                    </div>
+                    <div class="mb-8">
+                        <label for="cv-archivo" class="block text-text-light font-semibold mb-2">Adjuntar Currículum (PDF, DOC, DOCX)</label>
+                        <input type="file" id="cv-archivo" name="cv-archivo" accept=".pdf,.doc,.docx" class="w-full text-sm text-text-light file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-neutral hover:file:bg-primary-dark cursor-pointer transition-colors">
+                        <p class="text-xs text-text-light mt-2">Selecciona tu CV. Luego, deberás adjuntarlo manualmente en el correo que se abrirá.</p>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-primary text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button w-full sm:w-auto">
+                            Preparar Email de Postulación
+                        </button>
+                    </div>
+                </form>
+                <div id="cv-form-message" class="mt-6"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-20 md:py-28 bg-neutral-soft"> 
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-text-dark mb-4">Contáctanos</h2>
+                <p class="text-text-light text-lg max-w-2xl mx-auto">¿Tienes alguna pregunta o deseas iniciar un proyecto con nosotros? Completa el formulario o utiliza nuestros datos de contacto.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div class="bg-neutral p-8 md:p-12 rounded-xl shadow-2xl"> 
                     <form id="contact-form">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                             <div>
-                                <label for="nombre" class="block text-dark-soft font-semibold mb-2">Nombre Completo</label>
-                                <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <label for="nombre" class="block text-text-light font-semibold mb-2">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
                             </div>
                             <div>
-                                <label for="email" class="block text-dark-soft font-semibold mb-2">Correo Electrónico</label>
-                                <input type="email" id="email" name="email" placeholder="Ej: juan.perez@correo.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <label for="email" class="block text-text-light font-semibold mb-2">Correo Electrónico</label>
+                                <input type="email" id="email" name="email" placeholder="Ej: juan.perez@correo.com" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
                             </div>
                         </div>
                         <div class="mb-6">
-                            <label for="asunto" class="block text-dark-soft font-semibold mb-2">Asunto</label>
-                            <input type="text" id="asunto" name="asunto" placeholder="Ej: Consulta sobre Desarrollo Web" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <label for="asunto" class="block text-text-light font-semibold mb-2">Asunto</label>
+                            <input type="text" id="asunto" name="asunto" placeholder="Ej: Consulta sobre Desarrollo Web" class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
                         </div>
                         <div class="mb-6">
-                            <label for="mensaje" class="block text-dark-soft font-semibold mb-2">Mensaje</label>
-                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+                            <label for="mensaje" class="block text-text-light font-semibold mb-2">Mensaje</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." class="w-full px-4 py-3 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required></textarea>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button w-full sm:w-auto">
+                            <button type="submit" class="bg-primary text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-primary-dark cta-button w-full sm:w-auto">
                                 Enviar Mensaje
                             </button>
                         </div>
                     </form>
-                    <div id="form-message" class="mt-4"></div> </div>
-
-                <div class="space-y-8">
-                    <div class="bg-neutral p-8 rounded-xl shadow-xl">
-                        <h3 class="text-2xl font-semibold text-dark mb-6">Información de Contacto</h3>
-                        <div class="space-y-4">
-                            <p class="text-dark-soft flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail inline-block mr-3 align-text-top text-primary flex-shrink-0 mt-1"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                                <a href="mailto:info@tuempresa.com" class="hover:text-primary">info@tuempresa.com</a>
+                    <div id="form-message" class="mt-6"></div>
+                </div>
+                <div class="space-y-10">
+                    <div class="bg-neutral p-8 rounded-xl shadow-2xl"> 
+                        <h3 class="text-2xl font-bold text-text-dark mb-6">Información de Contacto</h3>
+                        <div class="space-y-5">
+                            <p class="text-text-light flex items-center text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail mr-3 text-primary flex-shrink-0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <a href="mailto:info@tuempresa.com" class="hover:text-primary transition-colors">info@tuempresa.com</a>
                             </p>
-                            <p class="text-dark-soft flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone inline-block mr-3 align-text-top text-primary flex-shrink-0 mt-1"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                                <a href="tel:+5493838000000" class="hover:text-primary">+54 9 (3838) XXX-XXX (Santa María, Catamarca)</a>
+                            <p class="text-text-light flex items-center text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone mr-3 text-primary flex-shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                <a href="tel:+5493838000000" class="hover:text-primary transition-colors">+54 9 (3838) XXX-XXX</a>
                             </p>
-                            <p class="text-dark-soft flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin inline-block mr-3 align-text-top text-primary flex-shrink-0 mt-1"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span>Calle Ejemplo 123, Santa María, Catamarca, Argentina<br>(Reemplazar con dirección real)</span>
+                            <p class="text-text-light flex items-start text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin mr-3 text-primary flex-shrink-0 mt-1"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                <span>Calle Ejemplo 123, Santa María,<br>Catamarca, Argentina</span>
                             </p>
                         </div>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-semibold text-dark mb-4 text-center md:text-left">Nuestra Ubicación</h3>
+                        <h3 class="text-2xl font-bold text-text-dark mb-5 text-center lg:text-left">Nuestra Ubicación</h3>
                         <div class="map-container">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d891.2352700629251!2d-66.04467573045316!3d-26.682366800258727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQwJzU2LjUiUyA2NsKwMDInMzguNSJX!5e0!3m2!1ses-419!2sar!4v1748650345312!5m2!1ses-419!2sar"
+                                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1782.4696056682494!2d-66.04541957431236!3d-26.682426568396668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQwJzU2LjciUyA2NsKwMDInMzguNiJX!5e0!3m2!1ses-419!2sar!4v1748913027108!5m2!1ses-419!2sar"
                                 width="600"
                                 height="450"
                                 style="border:0;"
@@ -304,15 +387,27 @@
         </div>
     </section>
 
-    <footer class="bg-dark text-neutral-soft py-12">
+    <footer class="bg-footer-bg text-neutral-soft py-16">
         <div class="container mx-auto px-6 text-center">
-            <div class="mb-4">
-                <a href="#" class="text-neutral-soft hover:text-primary mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-                <a href="#" class="text-neutral-soft hover:text-primary mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></a>
-                <a href="#" class="text-neutral-soft hover:text-primary mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <div class="mb-8"> 
+                <h3 class="text-2xl font-semibold text-neutral mb-6">Síguenos en Redes Sociales</h3>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-neutral-soft hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-white/10" aria-label="[Facebook de TuEmpresa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-neutral-soft hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-white/10" aria-label="[Twitter de TuEmpresa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-neutral-soft hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-white/10" aria-label="[LinkedIn de TuEmpresa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-neutral-soft hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-white/10" aria-label="[Instagram de TuEmpresa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                </div>
             </div>
-            <p>© <span id="currentYear"></span> Don Juan. Todos los derechos reservados.</p>
-            <p class="text-sm mt-2">Diseñado por YokaSoft <p>
+            <p class="text-sm">© <span id="currentYear"></span> TuEmpresa. Todos los derechos reservados.</p>
+            <p class="text-xs mt-2 opacity-75">Diseñado con <span class="text-primary">♥</span> por [Tu Nombre/Agencia]</p>
         </div>
     </footer>
 
@@ -349,32 +444,72 @@
             if (contactForm && formMessage) { 
                 contactForm.addEventListener('submit', function(event) {
                     event.preventDefault(); 
-
                     formMessage.textContent = 'Enviando mensaje...';
-                    formMessage.className = 'p-4 mt-4 rounded-md text-center bg-blue-100 text-blue-700'; // Estilo temporal de carga
+                    formMessage.className = 'p-4 mt-4 rounded-md text-center bg-blue-100 text-blue-700'; // Estilo temporal
                     formMessage.style.display = 'block';
-
                     setTimeout(() => {
                         const isSuccess = Math.random() > 0.2; 
-
                         if (isSuccess) {
                             formMessage.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.';
-                            formMessage.className = 'success p-4 mt-4 rounded-md text-center'; // Re-aplica clases base
+                            formMessage.className = 'success p-4 mt-4 rounded-md text-center';
                             contactForm.reset();
                         } else {
                             formMessage.textContent = 'Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde o contáctanos directamente.';
-                            formMessage.className = 'error p-4 mt-4 rounded-md text-center'; // Re-aplica clases base
+                            formMessage.className = 'error p-4 mt-4 rounded-md text-center';
                         }
                         formMessage.style.display = 'block';
-
-                        setTimeout(() => {
-                            formMessage.style.display = 'none';
-                        }, 7000);
-
+                        setTimeout(() => { formMessage.style.display = 'none'; }, 7000);
                     }, 2000);
                 });
             }
 
+            // Script para el manejo del formulario de CV (mailto)
+            const cvForm = document.getElementById('cv-form');
+            const cvFormMessage = document.getElementById('cv-form-message');
+
+            if (cvForm && cvFormMessage) {
+                cvForm.addEventListener('submit', function(event) {
+                    event.preventDefault(); 
+
+                    const nombre = document.getElementById('cv-nombre').value;
+                    const email = document.getElementById('cv-email').value;
+                    const telefono = document.getElementById('cv-telefono').value;
+                    const area = document.getElementById('cv-area').value;
+                    const mensaje = document.getElementById('cv-mensaje').value;
+                    const cvFile = document.getElementById('cv-archivo').files[0]; 
+                    
+                    const emailDestino = 'recursoshumanos@tuempresa.com'; 
+                    
+                    let asunto = `Postulación para ${area} - ${nombre}`;
+                    let cuerpoEmail = `Hola,\n\nEstoy interesado/a en la oportunidad de trabajar en TuEmpresa en el área de ${area}.\n\n`;
+                    cuerpoEmail += `Nombre: ${nombre}\n`;
+                    cuerpoEmail += `Email: ${email}\n`;
+                    if (telefono) {
+                        cuerpoEmail += `Teléfono: ${telefono}\n`;
+                    }
+                    cuerpoEmail += `\nMensaje:\n${mensaje}\n\n`;
+                    cuerpoEmail += `--- Fin del mensaje autogenerado ---\n\n`;
+                    
+                    if (cvFile) {
+                        cuerpoEmail += `IMPORTANTE: Por favor, no olvides adjuntar manualmente mi CV (${cvFile.name}) a este correo.\n`;
+                    } else {
+                         cuerpoEmail += `IMPORTANTE: Por favor, no olvides adjuntar manualmente mi CV a este correo.\n`;
+                    }
+
+                    const mailtoLink = `mailto:${emailDestino}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpoEmail)}`;
+
+                    cvFormMessage.textContent = 'Preparando tu correo... Serás redirigido a tu cliente de email. Por favor, adjunta tu CV manualmente antes de enviar.';
+                    cvFormMessage.className = 'success p-4 mt-4 rounded-md text-center';
+                    cvFormMessage.style.display = 'block';
+
+                    setTimeout(() => {
+                        window.location.href = mailtoLink;
+                        cvFormMessage.style.display = 'none'; 
+                        cvForm.reset(); 
+                    }, 3500); 
+                });
+            }
+            
             // Carrusel para la sección Hero
             const heroCarouselElement = document.getElementById('hero-carousel');
             if (heroCarouselElement) {
@@ -387,25 +522,19 @@
 
                 function showSlide(index) {
                     slides.forEach((slide, i) => {
-                        // Define el estado inactivo
-                        slide.classList.remove('opacity-100', 'z-20'); // Clases de estado activo
-                        slide.classList.add('opacity-0', 'z-10');    // Clases de estado inactivo
-
-                        if (i === index) { // Si es el slide a mostrar
-                            slide.classList.remove('opacity-0', 'z-10'); // Quita clases de inactivo
-                            slide.classList.add('opacity-100', 'z-20');  // Añade clases de activo
+                        slide.classList.remove('opacity-100', 'z-20');
+                        slide.classList.add('opacity-0', 'z-10');
+                        if (i === index) {
+                            slide.classList.remove('opacity-0', 'z-10');
+                            slide.classList.add('opacity-100', 'z-20');
                         }
                     });
                 }
 
-                // Configuración inicial de los slides
                 slides.forEach((slide, i) => {
                     slide.classList.add('absolute', 'inset-0', 'w-full', 'h-full', 'transition-opacity', 'duration-1000', 'ease-in-out');
-                    if (i === 0) { // El primer slide es el activo inicialmente
-                        slide.classList.add('opacity-100', 'z-20');
-                    } else { // Los demás slides están inactivos
-                        slide.classList.add('opacity-0', 'z-10');
-                    }
+                    if (i === 0) { slide.classList.add('opacity-100', 'z-20'); } 
+                    else { slide.classList.add('opacity-0', 'z-10'); }
                 });
 
                 if (prevButton) {
@@ -424,11 +553,9 @@
                     });
                 }
                 
-                function stopAutoSlide() {
-                    clearInterval(autoSlideInterval);
-                }
+                function stopAutoSlide() { clearInterval(autoSlideInterval); }
 
-                function startAutoSlide(interval = 5000) {
+                function startAutoSlide(interval = 5500) { 
                     stopAutoSlide();
                     if (totalSlides > 1) { 
                         autoSlideInterval = setInterval(() => {
@@ -448,10 +575,7 @@
                 }
             }
 
-            // Inicializar Lucide Icons
-            if (typeof lucide !== 'undefined') { 
-                 lucide.createIcons();
-            }
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         });
     </script>
 
